@@ -11,7 +11,6 @@ import { formatDistanceToNowString } from "@/lib/dataUtils";
 import { useState } from "react";
 import { ParticipantTableInfo } from "./participant-table-info";
 import { ParticipantsTableMenu } from "./participants-table-menu";
-import { ParticipantsTablePagination } from "./participants-table-pagination";
 
 type Participant = {
   code: string;
@@ -122,7 +121,7 @@ export function ParticipantsTableList() {
   }
 
   return (
-    <div className="rounded-md border overflow-hidden">
+   
       <Table>
         <TableHeader>
           <TableRow>
@@ -165,7 +164,7 @@ export function ParticipantsTableList() {
           ))}
         </TableBody>
       </Table>
-      <ParticipantsTablePagination />
-    </div>
+      
+    
   );
 }

@@ -8,8 +8,8 @@ export function Header() {
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-5 pt-2">
         <img src={nlwIcon} />
-        <nav className="flex items-center gap-5">
-          <MenuItem to="/" >Eventos</MenuItem>
+        <nav className="flex items-center gap-5 text-muted-foreground">
+          <MenuItem to="/events" >Eventos</MenuItem>
           <MenuItem to="/participants-list">Participantes</MenuItem>
         </nav>
       </div>

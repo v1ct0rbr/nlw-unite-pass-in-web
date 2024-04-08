@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
 
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
@@ -42,10 +42,12 @@ type PaginationLinkProps = {
 const PaginationLink = ({
   className,
   isActive,
+  
   size = "icon",
   ...props
 }: PaginationLinkProps) => (
   <a
+    role="button"
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
@@ -59,6 +61,39 @@ const PaginationLink = ({
 );
 PaginationLink.displayName = "PaginationLink";
 
+const PaginationFirst = ({
+  className,
+  
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    
+    aria-label="Go to first page"
+    size="default"
+    className={cn("", className)}
+    {...props}
+  >
+    <ChevronsLeft className="h-4 w-4" />    
+  </PaginationLink>
+);
+PaginationFirst.displayName = "PaginationFirst";
+
+const PaginationLast = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof PaginationLink>) => (
+  <PaginationLink
+    aria-label="Go to last page"
+    size="default"
+    className={cn("", className)}
+    {...props}
+  >
+    <ChevronsRight className="h-4 w-4" />
+  </PaginationLink>
+);
+
+PaginationLast.displayName = "PaginationLast";
+
 const PaginationPrevious = ({
   className,
   ...props
@@ -66,11 +101,11 @@ const PaginationPrevious = ({
   <PaginationLink
     aria-label="Go to previous page"
     size="default"
-    className={cn("gap-1 pl-2.5", className)}
+    className={cn("", className)}
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    
   </PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -82,11 +117,10 @@ const PaginationNext = ({
   <PaginationLink
     aria-label="Go to next page"
     size="default"
-    className={cn("gap-1 pr-2.5", className)}
+    className={cn("", className)}
     {...props}
   >
-    <span>Next</span>
-    <ChevronRight className="h-4 w-4" />
+       <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -114,4 +148,6 @@ export {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  PaginationFirst,
+  PaginationLast
 };
