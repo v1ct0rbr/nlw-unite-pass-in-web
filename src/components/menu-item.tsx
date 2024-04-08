@@ -1,15 +1,15 @@
-interface MenuItemProps extends React.HTMLProps<HTMLAnchorElement> {
-  title: string;
-  active?: boolean;
-}
+import { Link, LinkProps, useLocation } from "react-router-dom";
 
-export function MenuItem({ active, title, ...rest }: MenuItemProps) {
+interface MenuItemProps extends LinkProps {}
+
+export function MenuItem(props: MenuItemProps) {
+  const { pathname } = useLocation()
   return (
-    <a
-      className={`${!active && "text-zinc-400"} font-medium text-sm `}
-      {...rest}
-    >
-      {title}
-    </a>
+    <Link data-current={pathname === props.to}
+      className={`data-[current=true]:text-foreground font-medium text-sm `}
+      {...props}
+    />
+    
+    
   );
 }
