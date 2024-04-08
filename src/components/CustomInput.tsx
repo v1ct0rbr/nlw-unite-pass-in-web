@@ -18,9 +18,9 @@ export function CustomInput({
   return (
     <div className="flex items-center">
       {LucideIcon != null && (
-        <div className="relative inset-y-0 left-7 flex items-center pointer-events-non">
+        <div className="relative inset-y-0 left-8 flex items-center pointer-events-non">
           <Suspense fallback={fallback}>
-            <LucideIcon className="w-5 h-5 opacity-70" />
+            <LucideIcon className="w-5 h-5 opacity-70 text-green-400" />
           </Suspense>
         </div>
       )}

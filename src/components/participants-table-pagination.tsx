@@ -10,7 +10,7 @@ import {
 
 export function ParticipantsTablePagination() {
   return (
-    <div className="flex items-center justify-between w-full px-2">
+    <div className="border border-l-0 border-r-0 border-b-0 border-t-[1px] flex items-center justify-between w-full p-2">
       <div>
         <p className="text-sm text-gray-500">
           Mostrando 1-10 de 100 participantes

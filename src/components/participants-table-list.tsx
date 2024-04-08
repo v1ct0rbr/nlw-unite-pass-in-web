@@ -1,89 +1,171 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatDistanceToNowString } from "@/lib/dataUtils";
+import { useState } from "react";
+import { ParticipantTableInfo } from "./participant-table-info";
+import { ParticipantsTableMenu } from "./participants-table-menu";
+import { ParticipantsTablePagination } from "./participants-table-pagination";
 
-const invoices = [
+type Participant = {
+  code: string;
+  name: string;
+  email: string;
+  inscriptionDate: string;
+  checkInDate: string;
+};
+
+const participants = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
+    code: "001",
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    inscriptionDate: "2021-10-01",
+    checkInDate: "2021-10-01",
   },
   {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
+    code: "002",
+    name: "Jane Doe",
+    email: "janedoe@gmail.com",
+    inscriptionDate: "2021-10-01",
+    checkInDate: "2021-10-01",
   },
   {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
+    code: "003",
+    name: "Alice Smith",
+    email: "alice.smith@gmail.com",
+    inscriptionDate: "2021-10-02",
+    checkInDate: "2021-10-02",
   },
   {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
+    code: "004",
+    name: "Bob Johnson",
+    email: "bob.johnson@gmail.com",
+    inscriptionDate: "2021-10-02",
+    checkInDate: "2021-10-02",
   },
   {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
+    code: "005",
+    name: "Eva Davis",
+    email: "eva.davis@gmail.com",
+    inscriptionDate: "2021-10-03",
+    checkInDate: "2021-10-03",
   },
   {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
+    code: "006",
+    name: "Michael Wilson",
+    email: "michael.wilson@gmail.com",
+    inscriptionDate: "2021-10-03",
+    checkInDate: "2021-10-03",
   },
   {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
+    code: "007",
+    name: "Olivia Taylor",
+    email: "olivia.taylor@gmail.com",
+    inscriptionDate: "2021-10-04",
+    checkInDate: "2021-10-04",
   },
-];
+  {
+    code: "008",
+    name: "William Anderson",
+    email: "william.anderson@gmail.com",
+    inscriptionDate: "2021-10-04",
+    checkInDate: "2021-10-04",
+  },
+  {
+    code: "009",
+    name: "Sophia Martinez",
+    email: "sophia.martinez@gmail.com",
+    inscriptionDate: "2021-10-05",
+    checkInDate: "2021-10-05",
+  },
+  {
+    code: "010",
+    name: "James Brown",
+    email: "james.brown@gmail.com",
+    inscriptionDate: "2021-10-05",
+    checkInDate: "2021-10-05",
+  },
+  {
+    code: "011",
+    name: "Emma Thompson",
+    email: "emma.thompson@gmail.com",
+    inscriptionDate: "2021-10-06",
+    checkInDate: "2021-10-06",
+  },
+  {
+    code: "012",
+    name: "Alexander Clark",
+    email: "alexander.clark@gmail.com",
+    inscriptionDate: "2021-10-06",
+    checkInDate: "2021-10-06",
+  },
+] as Participant[];
 
 export function ParticipantsTableList() {
+  const [allChecked, setAllChecked] = useState(false);
+
+  function handleDetails() {
+    console.log("Details");
+  }
+  function handleDelete() {
+    console.log("Delete");
+  }
+  function handleCheckAll() {
+    setAllChecked(!allChecked);
+  }
+
   return (
     <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead>
+              <Checkbox id="checkAll" onChange={handleCheckAll} />
+            </TableHead>
+            <TableHead>Código</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Data da Inscrição</TableHead>
+            <TableHead>Data do Check-in</TableHead>
+            <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
+          {participants.map((participant) => (
+            <TableRow key={participant.code}>
+              <TableCell>
+                <Checkbox className="check" checked={allChecked} />
+              </TableCell>
+              <TableCell>{participant.code}</TableCell>
+              <TableCell className="font-medium">
+                <ParticipantTableInfo
+                  name={participant.name}
+                  email={participant.email}
+                />{" "}
+              </TableCell>
+              <TableCell>
+                {formatDistanceToNowString(participant.inscriptionDate)}
+              </TableCell>
+              <TableCell>
+                {formatDistanceToNowString(participant.checkInDate)}
+              </TableCell>
               <TableCell className="text-right">
-                {invoice.totalAmount}
+                <ParticipantsTableMenu
+                  handleDetails={handleDetails}
+                  handleDelete={handleDelete}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
+      <ParticipantsTablePagination />
     </div>
   );
 }
