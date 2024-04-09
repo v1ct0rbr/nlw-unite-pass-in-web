@@ -1,14 +1,15 @@
 import { api } from "@/lib/axios";
 
 export type Atteendee = {
-    id: number,
+    checked?: boolean,
+    id: string,
     name: string,
     email: string,
     createdAt: string,
     checkedInAt: string,
 }
 
-interface ParticipantResponse {
+export interface ParticipantResponse {
     attendees: Atteendee[],
     total: number    
 }
@@ -43,9 +44,15 @@ export async function getAttendees({
     return response.data
 }
 
-export async function getParticipantBadge({
-     attendeeId
-}: { attendeeId: number }) {
+export async function getParticipantBadge( attendeeId: string ) {
     const response = await api.get<ParticipanteBadgeResponse>(`/attendees/${attendeeId}/badge`)
     return response.data
+}
+
+export async function checkInAttendee(attendeeId: string) {
+    try{
+        await api.get(`/attendees/${attendeeId}/check-in`)
+    } catch (error) {
+        console.error(error)
+    }
 }

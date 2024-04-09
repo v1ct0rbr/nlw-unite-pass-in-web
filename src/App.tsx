@@ -11,7 +11,7 @@ export function App() {
   return (
     <HelmetProvider>
     <ThemeProvider defaultTheme="dark" storageKey="nlw-pass-in-web">
-    <Helmet titleTemplate="%s | food.shop"></Helmet>
+    <Helmet titleTemplate="%s | NLW - Unite"></Helmet>
         <Toaster richColors />
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />

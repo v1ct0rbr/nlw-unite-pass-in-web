@@ -40,7 +40,7 @@ export function ParticipantsList() {
 
   return (
     <>
-      <Helmet title="Dashboard" />
+      <Helmet title="Attendees List" />
 
       <div className="flex items-center gap-5">
         <h1 className="text-2xl font-bold">Participantes</h1>

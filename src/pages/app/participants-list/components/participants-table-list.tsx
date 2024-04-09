@@ -1,4 +1,4 @@
-import { Atteendee } from "@/api/participants";
+import { Atteendee, ParticipantResponse } from "@/api/participants";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -11,44 +11,82 @@ import {
 import { formatDistanceToNowString } from "@/lib/dataUtils";
 import { useState } from "react";
 /* import { ParticipantTableInfo } from "./participants-table-info"; */
-import { ParticipantsTableMenu } from "./participants-table-menu";
+
 import { ParticipantTableInfo } from "./participants-table-info";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Check, CheckCheck } from "lucide-react";
+import { ParticipantDialog } from "./participant-detail";
+import { useQueryClient } from "@tanstack/react-query";
+
+
 
 interface ParticipantsTableListProps {
   attendees?: Atteendee[];
   isFetching?: boolean;
-  handleDetails?: () => void;
-  handleDelete?: () => void;
-  handleCheckIn?: (attendee: Atteendee) => void
-  handleCancelCheckIn?: (attendee: Atteendee) => void
+
 }
 
 export function ParticipantsTableList({
-  attendees,
-  handleDelete,
-  handleDetails,
+  attendees, 
   isFetching,
  
 }: ParticipantsTableListProps) {
-  const [allChecked, setAllChecked] = useState(false);
+  
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+  const queryClient = useQueryClient()
+  
+  function updateOrderStatusOnCache(participantId: string, checkInDate: Date) {
+    const ordersListCache = queryClient.getQueriesData<ParticipantResponse>({
+      queryKey: ['participants'],
+    })
 
-  function handleCheckAll() {
-    setAllChecked(!allChecked);
+    ordersListCache.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) {
+        return
+      }
+
+      queryClient.setQueryData<ParticipantResponse>(cacheKey, {
+        ...cacheData,
+        attendees: cacheData.attendees.map((attendee) => {
+          if (attendee.id === participantId) {
+            return { ...attendee, checkedInAt: checkInDate.toISOString()}
+          }
+
+          return attendee
+        }),
+      })
+    })
   }
 
+  /* const { mutateAsync: aproveOrderFn, isPending: isAprovingOrder } =
+  useMutation({
+    mutationFn: aproveOrder,
+    async onSuccess(_, { orderId }) {
+      updateOrderStatusOnCache(orderId, 'processing')
+    },
+  }) */
+
   return (
-    <Table>
+    <>
+     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>
-            <Checkbox id="checkAll" onChange={handleCheckAll} />
+            <Checkbox id="checkAll" />
           </TableHead>
           <TableHead>Código</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Data da Inscrição</TableHead>
           <TableHead>Data do Check-in</TableHead>
-          <TableHead className="text-right"></TableHead>
+          <TableHead className="text-right w-[100px]">
+            <Button variant="destructive" >
+              <Check size={16} />
+              Check-in de selecionados
+            </Button>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -66,7 +104,7 @@ export function ParticipantsTableList({
                   </TableCell>
                 <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
                 <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-center">
                   <Skeleton className="h-4 w-4" />
                 </TableCell>
               </TableRow>
@@ -81,7 +119,7 @@ export function ParticipantsTableList({
           attendees.map((participant) => (
             <TableRow key={participant.id}>
               <TableCell>
-                <Checkbox className="check" checked={allChecked} />
+                <Checkbox className="check" />
               </TableCell>
               <TableCell>{participant.id}</TableCell>
               <TableCell className="font-medium">
@@ -94,19 +132,36 @@ export function ParticipantsTableList({
                 {formatDistanceToNowString(participant.createdAt)}
               </TableCell>
               <TableCell>
-                {participant.checkedInAt ? formatDistanceToNowString(participant.checkedInAt) : "--"} 
-                            
+                {participant.checkedInAt ? formatDistanceToNowString(participant.checkedInAt) : "--"}                            
               </TableCell>
-              <TableCell className="text-right">
-                <ParticipantsTableMenu
-                  handleDetails={handleDetails}
-                  handleDelete={handleDelete}
-                />
+              <TableCell className="flex items-center justify-center">
+              {participant.checkedInAt ? (
+                 <Button className=" text-green-500" variant="outline" disabled={true} title="Checkin já foi realizado">
+                 <CheckCheck size={16}  />                        
+                  </Button>
+              ) : (
+                <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+                <DialogTrigger asChild>
+                    <Button className="text-green-500" variant="secondary">
+                       <Check size={16}  />                        
+                        </Button>
+                        </DialogTrigger>
+                  <ParticipantDialog open={isDetailsOpen} participantId={participant.id} />
+                </Dialog>
+              )
+              
+              }  
+              
+               
               </TableCell>
             </TableRow>
           ))
         }
       </TableBody>
     </Table>
+   
+    </>
+   
+
   );
 }
