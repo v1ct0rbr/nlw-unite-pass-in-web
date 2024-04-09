@@ -1,15 +1,20 @@
 import { api } from "@/lib/axios";
 
-interface ParticipantResponse {
+export type Atteendee = {
     id: number,
     name: string,
     email: string,
-    createdAt: Date,
-    checkedInAt: Date,
+    createdAt: string,
+    checkedInAt: string,
+}
+interface ParticipantResponse {
+    attendees: Atteendee[],
+    total: number   
+    
 }
 
 export interface ParticipantsQuery {
-    eventId: number,
+    eventId: string,
     pageIndex?: number | null,
     query?: string | null,
 }
@@ -17,7 +22,7 @@ export interface ParticipantsQuery {
 export async function getAttendees({
     eventId, pageIndex,query
 }: ParticipantsQuery) {
-    const response = await api.get<ParticipantResponse[]>(`/events/${eventId}/participants`, {
+    const response = await api.get<ParticipantResponse>(`/events/${eventId}/attendees`, {
         params: {
             pageIndex,
             query,

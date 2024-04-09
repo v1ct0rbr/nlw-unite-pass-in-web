@@ -1,3 +1,4 @@
+import { Atteendee } from "@/api/get-participansts";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
@@ -12,136 +13,51 @@ import { useState } from "react";
 import { ParticipantTableInfo } from "./participant-table-info";
 import { ParticipantsTableMenu } from "./participants-table-menu";
 
-type Participant = {
-  code: string;
-  name: string;
-  email: string;
-  inscriptionDate: string;
-  checkInDate: string;
-};
+interface ParticipantsTableListProps {
+  attendees?: Atteendee[];
+  handleDetails?: () => void;
+  handleDelete?: () => void;
+}
 
-const participants = [
-  {
-    code: "001",
-    name: "John Doe",
-    email: "johndoe@gmail.com",
-    inscriptionDate: "2021-10-01",
-    checkInDate: "2021-10-01",
-  },
-  {
-    code: "002",
-    name: "Jane Doe",
-    email: "janedoe@gmail.com",
-    inscriptionDate: "2021-10-01",
-    checkInDate: "2021-10-01",
-  },
-  {
-    code: "003",
-    name: "Alice Smith",
-    email: "alice.smith@gmail.com",
-    inscriptionDate: "2021-10-02",
-    checkInDate: "2021-10-02",
-  },
-  {
-    code: "004",
-    name: "Bob Johnson",
-    email: "bob.johnson@gmail.com",
-    inscriptionDate: "2021-10-02",
-    checkInDate: "2021-10-02",
-  },
-  {
-    code: "005",
-    name: "Eva Davis",
-    email: "eva.davis@gmail.com",
-    inscriptionDate: "2021-10-03",
-    checkInDate: "2021-10-03",
-  },
-  {
-    code: "006",
-    name: "Michael Wilson",
-    email: "michael.wilson@gmail.com",
-    inscriptionDate: "2021-10-03",
-    checkInDate: "2021-10-03",
-  },
-  {
-    code: "007",
-    name: "Olivia Taylor",
-    email: "olivia.taylor@gmail.com",
-    inscriptionDate: "2021-10-04",
-    checkInDate: "2021-10-04",
-  },
-  {
-    code: "008",
-    name: "William Anderson",
-    email: "william.anderson@gmail.com",
-    inscriptionDate: "2021-10-04",
-    checkInDate: "2021-10-04",
-  },
-  {
-    code: "009",
-    name: "Sophia Martinez",
-    email: "sophia.martinez@gmail.com",
-    inscriptionDate: "2021-10-05",
-    checkInDate: "2021-10-05",
-  },
-  {
-    code: "010",
-    name: "James Brown",
-    email: "james.brown@gmail.com",
-    inscriptionDate: "2021-10-05",
-    checkInDate: "2021-10-05",
-  },
-  {
-    code: "011",
-    name: "Emma Thompson",
-    email: "emma.thompson@gmail.com",
-    inscriptionDate: "2021-10-06",
-    checkInDate: "2021-10-06",
-  },
-  {
-    code: "012",
-    name: "Alexander Clark",
-    email: "alexander.clark@gmail.com",
-    inscriptionDate: "2021-10-06",
-    checkInDate: "2021-10-06",
-  },
-] as Participant[];
-
-export function ParticipantsTableList() {
+export function ParticipantsTableList({
+  attendees,
+  handleDelete,
+  handleDetails,
+}: ParticipantsTableListProps) {
   const [allChecked, setAllChecked] = useState(false);
 
-  function handleDetails() {
-    console.log("Details");
-  }
-  function handleDelete() {
-    console.log("Delete");
-  }
   function handleCheckAll() {
     setAllChecked(!allChecked);
   }
 
   return (
-   
-      <Table>
-        <TableHeader>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>
+            <Checkbox id="checkAll" onChange={handleCheckAll} />
+          </TableHead>
+          <TableHead>Código</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Data da Inscrição</TableHead>
+          <TableHead>Data do Check-in</TableHead>
+          <TableHead className="text-right"></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {attendees === undefined || attendees?.length === 0 ? (
           <TableRow>
-            <TableHead>
-              <Checkbox id="checkAll" onChange={handleCheckAll} />
-            </TableHead>
-            <TableHead>Código</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Data da Inscrição</TableHead>
-            <TableHead>Data do Check-in</TableHead>
-            <TableHead className="text-right"></TableHead>
+            <TableCell colSpan={6} className="text-center">
+              Nenhum participante encontrado
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {participants.map((participant) => (
-            <TableRow key={participant.code}>
+        ) : (
+          attendees.map((participant) => (
+            <TableRow key={participant.id}>
               <TableCell>
                 <Checkbox className="check" checked={allChecked} />
               </TableCell>
-              <TableCell>{participant.code}</TableCell>
+              <TableCell>{participant.id}</TableCell>
               <TableCell className="font-medium">
                 <ParticipantTableInfo
                   name={participant.name}
@@ -149,10 +65,10 @@ export function ParticipantsTableList() {
                 />{" "}
               </TableCell>
               <TableCell>
-                {formatDistanceToNowString(participant.inscriptionDate)}
+                {formatDistanceToNowString(participant.createdAt)}
               </TableCell>
               <TableCell>
-                {formatDistanceToNowString(participant.checkInDate)}
+                {formatDistanceToNowString(participant.checkedInAt)}
               </TableCell>
               <TableCell className="text-right">
                 <ParticipantsTableMenu
@@ -161,10 +77,9 @@ export function ParticipantsTableList() {
                 />
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      
-    
+          ))
+        )}
+      </TableBody>
+    </Table>
   );
 }

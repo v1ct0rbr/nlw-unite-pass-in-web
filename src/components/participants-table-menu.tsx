@@ -9,8 +9,8 @@ import {
 } from "./ui/context-menu";
 
 interface ParticipantTableMenuProps {
-  handleDetails: () => void;
-  handleDelete: () => void;
+  handleDetails?: () => void;
+  handleDelete?: () => void;
 }
 
 export function ParticipantsTableMenu({
