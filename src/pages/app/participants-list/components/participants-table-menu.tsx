@@ -1,12 +1,12 @@
 import { EllipsisIcon, Trash2, User2Icon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../../../../components/ui/button";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "./ui/context-menu";
+} from "../../../../components/ui/context-menu";
 
 interface ParticipantTableMenuProps {
   handleDetails?: () => void;
@@ -20,8 +20,8 @@ export function ParticipantsTableMenu({
   return (
     <ContextMenu>
       <ContextMenuTrigger>
-        <Button variant="ghost">
-          <EllipsisIcon size={24} />
+        <Button variant="ghost" >
+          <EllipsisIcon size={20} />
         </Button>
       </ContextMenuTrigger>
       <ContextMenuContent>

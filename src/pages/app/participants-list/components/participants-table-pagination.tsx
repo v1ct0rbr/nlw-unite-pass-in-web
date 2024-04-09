@@ -32,18 +32,22 @@ export function ParticipantsTablePagination({
       <Pagination className="flex-none text-right">
         <PaginationContent>
           <PaginationItem>
-            <PaginationFirst onClick={() => onPageChange(0)} />
+            <PaginationFirst disabled={pageIndex === 0} 
+            variant="secondary"
+            onClick={() => onPageChange(0)} />
           </PaginationItem>
           <PaginationItem>
             <PaginationPrevious
-              href="#"
+            variant="secondary"
+              disabled={pageIndex === 0}
               onClick={() => onPageChange(pageIndex - 1)}
             />
           </PaginationItem>
 
           <PaginationItem>
             <PaginationNext
-              href="#"
+            variant="secondary"
+              disabled={pageIndex === pages - 1}
               onClick={() => onPageChange(pageIndex + 1)}
             >
               {pageIndex}
@@ -51,6 +55,8 @@ export function ParticipantsTablePagination({
           </PaginationItem>
           <PaginationItem>
             <PaginationLast
+            variant="secondary"
+              disabled={pageIndex === pages - 1}
               onClick={() => onPageChange(pages - 1)}
             ></PaginationLast>
           </PaginationItem>

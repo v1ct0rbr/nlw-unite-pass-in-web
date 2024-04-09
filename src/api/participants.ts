@@ -7,10 +7,22 @@ export type Atteendee = {
     createdAt: string,
     checkedInAt: string,
 }
+
 interface ParticipantResponse {
     attendees: Atteendee[],
-    total: number   
-    
+    total: number    
+}
+
+
+export type AttendeeBadge = {
+    name: string
+    email: string
+    eventTitle: string,
+    checkInURL: string,
+}
+
+interface ParticipanteBadgeResponse {
+    badge: AttendeeBadge
 }
 
 export interface ParticipantsQuery {
@@ -28,5 +40,12 @@ export async function getAttendees({
             query,
         }
     })
+    return response.data
+}
+
+export async function getParticipantBadge({
+     attendeeId
+}: { attendeeId: number }) {
+    const response = await api.get<ParticipanteBadgeResponse>(`/attendees/${attendeeId}/badge`)
     return response.data
 }

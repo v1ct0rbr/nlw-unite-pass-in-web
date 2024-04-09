@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from './pages/_layouts/app'
 
 import { ErrorPage } from './pages/ErrorPage'
-import { ParticipantsList } from './pages/app/participants-list/participants-list'
+import { ParticipantsList } from './pages/app/participants-list/participants-page'
 import { Events } from './pages/app/events/eventos'
 
 export const router = createBrowserRouter([

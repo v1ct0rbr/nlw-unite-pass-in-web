@@ -1,5 +1,5 @@
 import { CustomInput } from "./CustomInput";
-import { ParticipantsTableList } from "./participants-table-list";
+import { ParticipantsTableList } from "../pages/app/participants-list/components/participants-table-list";
 
 export function AttendeeList() {
   return (
@@ -8,7 +8,7 @@ export function AttendeeList() {
         <h1 className="text-2xl font-bold">Participantes</h1>
         <CustomInput
           className="pl-10"
-          name="search"
+          icon="search"
           placeholder="Buscar participante"
         />
       </div>

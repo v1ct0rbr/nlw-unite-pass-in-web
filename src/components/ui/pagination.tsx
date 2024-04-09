@@ -1,7 +1,7 @@
-import { ChevronFirst, ChevronLast, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
 
-import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
@@ -34,12 +34,14 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = "PaginationItem";
 
-type PaginationLinkProps = {
+/* type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">;
+  React.ComponentProps<"a">; */
 
-const PaginationLink = ({
+  interface PaginationButtonProps extends ButtonProps {} 
+
+/* const PaginationLink = ({
   className,
   isActive,
   
@@ -59,14 +61,35 @@ const PaginationLink = ({
     {...props}
   />
 );
-PaginationLink.displayName = "PaginationLink";
+PaginationLink.displayName = "PaginationLink"; */
+const PaginationButton = ({
+  className,
+  disabled,
+  variant,
+  size = "icon",
+  ...props
+}: PaginationButtonProps) => (
+  <Button
+    disabled={disabled}
+   
+    className={cn(
+      buttonVariants({
+        variant: variant,
+        size,
+      }),
+      className
+    )}
+    {...props}
+  />
+);
+PaginationButton.displayName = "PaginationLink";
 
 const PaginationFirst = ({
   className,
   
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
+}: React.ComponentProps<typeof PaginationButton>) => (
+  <PaginationButton
     
     aria-label="Go to first page"
     size="default"
@@ -74,22 +97,22 @@ const PaginationFirst = ({
     {...props}
   >
     <ChevronsLeft className="h-4 w-4" />    
-  </PaginationLink>
+  </PaginationButton>
 );
 PaginationFirst.displayName = "PaginationFirst";
 
 const PaginationLast = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
+}: React.ComponentProps<typeof PaginationButton>) => (
+  <PaginationButton
     aria-label="Go to last page"
     size="default"
     className={cn("", className)}
     {...props}
   >
     <ChevronsRight className="h-4 w-4" />
-  </PaginationLink>
+  </PaginationButton>
 );
 
 PaginationLast.displayName = "PaginationLast";
@@ -97,8 +120,8 @@ PaginationLast.displayName = "PaginationLast";
 const PaginationPrevious = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
+}: React.ComponentProps<typeof PaginationButton>) => (
+  <PaginationButton
     aria-label="Go to previous page"
     size="default"
     className={cn("", className)}
@@ -106,22 +129,22 @@ const PaginationPrevious = ({
   >
     <ChevronLeft className="h-4 w-4" />
     
-  </PaginationLink>
+  </PaginationButton>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
+}: React.ComponentProps<typeof PaginationButton>) => (
+  <PaginationButton
     aria-label="Go to next page"
     size="default"
     className={cn("", className)}
     {...props}
   >
        <ChevronRight className="h-4 w-4" />
-  </PaginationLink>
+  </PaginationButton>
 );
 PaginationNext.displayName = "PaginationNext";
 
@@ -145,7 +168,7 @@ export {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
+  PaginationButton as PaginationLink,
   PaginationNext,
   PaginationPrevious,
   PaginationFirst,
