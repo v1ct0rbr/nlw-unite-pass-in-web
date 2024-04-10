@@ -1,19 +1,19 @@
-import { LucideProps } from "lucide-react";
-import dynamicIconImports from "lucide-react/dynamicIconImports";
-import { lazy, Suspense } from "react";
-import { Input } from "./ui/input";
+import { LucideProps } from 'lucide-react'
+import dynamicIconImports from 'lucide-react/dynamicIconImports'
+import { lazy, Suspense } from 'react'
+import { Input } from './ui/input'
 
-interface IconProps extends Omit<LucideProps, "ref"> {
-  icon: keyof typeof dynamicIconImports;
+interface IconProps extends Omit<LucideProps, 'ref'> {
+  icon: keyof typeof dynamicIconImports
 }
 
-const fallback = <div style={{ background: "#ddd", width: 24, height: 24 }} />;
+const fallback = <div style={{ background: '#ddd', width: 24, height: 24 }} />
 
 export function CustomInput({
   icon,
   ...rest
 }: React.InputHTMLAttributes<HTMLInputElement> & IconProps) {
-  const LucideIcon = icon != undefined ? lazy(dynamicIconImports[icon]) : null;
+  const LucideIcon = icon !== undefined ? lazy(dynamicIconImports[icon]) : null
 
   return (
     <div className="flex items-center">
@@ -26,5 +26,5 @@ export function CustomInput({
       )}
       <Input {...rest} />
     </div>
-  );
+  )
 }

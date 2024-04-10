@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
       { path: '/events', element: <Events /> },
     ],
   },
- /*  {
+  /*  {
     path: '/',
     element: <AuthLayout />,
     children: [

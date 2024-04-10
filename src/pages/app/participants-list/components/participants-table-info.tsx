@@ -1,6 +1,6 @@
 interface ParticipantTableInfoProps {
-  name: string;
-  email: string;
+  name: string
+  email: string
 }
 
 export function ParticipantTableInfo({
@@ -12,5 +12,5 @@ export function ParticipantTableInfo({
       <b className="font-semibold text-[14px] text-foreground">{name}</b>
       <span className="text-xs">{email}</span>
     </div>
-  );
+  )
 }

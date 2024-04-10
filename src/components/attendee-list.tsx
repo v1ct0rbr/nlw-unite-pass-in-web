@@ -1,5 +1,5 @@
-import { CustomInput } from "./CustomInput";
-import { ParticipantsTableList } from "../pages/app/participants-list/components/participants-table-list";
+import { CustomInput } from './CustomInput'
+import { ParticipantsTableList } from '../pages/app/participants-list/components/participants-table-list'
 
 export function AttendeeList() {
   return (
@@ -14,5 +14,5 @@ export function AttendeeList() {
       </div>
       <ParticipantsTableList />
     </>
-  );
+  )
 }
