@@ -33,14 +33,18 @@ export function ParticipantsTablePagination({
         <PaginationContent>
           <PaginationItem>
             <PaginationFirst
+              size="sm"
+              className="dark:text-white text-gray-700"
               disabled={pageIndex === 0}
-              variant="secondary"
+              variant="outline"
               onClick={() => onPageChange(0)}
             />
           </PaginationItem>
           <PaginationItem>
             <PaginationPrevious
-              variant="secondary"
+              size="sm"
+              className="dark:text-white text-gray-700"
+              variant="outline"
               disabled={pageIndex === 0}
               onClick={() => onPageChange(pageIndex - 1)}
             />
@@ -48,7 +52,9 @@ export function ParticipantsTablePagination({
 
           <PaginationItem>
             <PaginationNext
-              variant="secondary"
+              size="sm"
+              className="dark:text-white text-gray-700"
+              variant="outline"
               disabled={pageIndex === pages - 1}
               onClick={() => onPageChange(pageIndex + 1)}
             >
@@ -57,7 +63,9 @@ export function ParticipantsTablePagination({
           </PaginationItem>
           <PaginationItem>
             <PaginationLast
-              variant="secondary"
+              size="sm"
+              className="dark:text-white text-gray-700"
+              variant="outline"
               disabled={pageIndex === pages - 1}
               onClick={() => onPageChange(pages - 1)}
             ></PaginationLast>
