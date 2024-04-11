@@ -17,7 +17,7 @@ import { RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface ParticipantDialogProps {
-  participantId: string
+  participantId: number
   open: boolean
   allowCheckIn: boolean
 }
@@ -36,7 +36,7 @@ export function ParticipantDialog({
     staleTime: 1000,
   })
 
-  function updateCheckInOnCache(participantId: string, checkInDate: Date) {
+  function updateCheckInOnCache(participantId: number, checkInDate: Date) {
     const attendeesListCache = queryClient.getQueriesData<ParticipantResponse>({
       queryKey: ['participants'],
     })

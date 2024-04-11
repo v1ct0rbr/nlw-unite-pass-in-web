@@ -2,7 +2,7 @@ import { api } from '@/lib/axios'
 
 export type Atteendee = {
   checked?: boolean
-  id: string
+  id: number
   name: string
   email: string
   createdAt: string
@@ -48,14 +48,14 @@ export async function getAttendees({
   return response.data
 }
 
-export async function getParticipantBadge(attendeeId: string) {
+export async function getParticipantBadge(attendeeId: number) {
   const response = await api.get<ParticipanteBadgeResponse>(
     `/attendees/${attendeeId}/badge`,
   )
   return response.data
 }
 
-export async function checkInAttendee(attendeeId: string) {
+export async function checkInAttendee(attendeeId: number) {
   const response = await api.get(`/attendees/${attendeeId}/check-in`)
   return response.status
 }
@@ -64,7 +64,7 @@ export interface RemoveParticipantsQuery {
   attendeeIds: string[]
 }
 
-export async function removeParticipants(attendeeIds: string[]) {
+export async function removeParticipants(attendeeIds: number[]) {
   const response = await api.delete('/attendees', {
     data: {
       attendeeIds,

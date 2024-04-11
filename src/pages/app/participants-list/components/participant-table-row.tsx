@@ -1,35 +1,68 @@
-import { Atteendee } from '@/api/participants'
-import { Checkbox } from '@/components/ui/checkbox'
-import { TableCell, TableRow } from '@/components/ui/table'
-import { ParticipantTableInfo } from './participants-table-info'
-import { formatDistanceToNowString } from '@/lib/dataUtils'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { CheckCheck, SquarePen, Trash2 } from 'lucide-react'
-import { ParticipantDialog } from './participant-detail'
-import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { Atteendee, ParticipantResponse } from '@/api/participants'
 import { MyAlertDialog } from '@/components/MyAlertDialog'
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { TableCell, TableRow } from '@/components/ui/table'
+import { formatDistanceToNowString } from '@/lib/dataUtils'
+import { useQueryClient } from '@tanstack/react-query'
+import { CheckCheck, SquarePen, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { ParticipantDialog } from './participant-detail'
+import { ParticipantTableInfo } from './participants-table-info'
 
 interface ParticipantTableRowProps {
   participant: Atteendee
-  handleDeleteAteendee: (attendeeId: string) => void
+  handleDeleteAteendee: (attendeeId: number) => void
 }
 
 export function ParticipantTableRow({
   participant,
   handleDeleteAteendee,
 }: ParticipantTableRowProps) {
+  const queryClient = useQueryClient()
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   function handleChangeDetailsOpen() {
     setIsDetailsOpen((state) => !state)
   }
 
+  function updateAttendeeOnCheckBoxChange(attendeeId: number) {
+    const attendeesListCache = queryClient.getQueriesData<ParticipantResponse>({
+      queryKey: ['participants'],
+    })
+
+    attendeesListCache.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) {
+        return
+      }
+
+      queryClient.setQueryData<ParticipantResponse>(cacheKey, {
+        ...cacheData,
+        attendees: cacheData.attendees.map((attendee) =>
+          attendee.id === attendeeId
+            ? { ...attendee, checked: !attendee.checked }
+            : attendee,
+        ),
+      })
+    })
+  }
+
+  function handleCheckBoxChange(attendeeId: number) {
+    updateAttendeeOnCheckBoxChange(attendeeId)
+  }
+
   return (
     <TableRow key={participant.id}>
       <TableCell>
-        <Checkbox className="check" />
+        <Checkbox
+          name="attendeeId"
+          onCheckedChange={() => handleCheckBoxChange(participant.id)}
+          checked={participant.checked ? participant.checked : false}
+          value={participant.id}
+          className="check"
+        />
       </TableCell>
       <TableCell>{participant.id}</TableCell>
       <TableCell className="font-medium">
